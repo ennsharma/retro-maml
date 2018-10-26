@@ -3,33 +3,37 @@ import tensorflow as tf
 
 class MetaLearner(object):
 
-	def __init__(self):
-		self._sess, self._training_data, self._training_labels,\
-			self._test_data, self._test_labels = self._setup_graph()
+	def __init__(self,
+				 env, 
+				 batchsize=3,
+				 horizon=15,
+				 nn_layers=1):
+		self._cost_fn = env.cost_fn
+		self._state_dim = env.observation_space.shape[0]
+		self._action_dim = env.action_space.shape[0]
+		self._horizon = horizon
+		self._batchsize = batchsize
+		self._nn_layers = nn_layers
+		self._learning_rate = 1e-3
+		self._meta_learning_rate = 1e-3
 
-	def _setup_placeholders(self, inputs=None):
-		if inputs is None:
-			training_data = tf.placeholder(name="training_data", dtype=tf.float32)
-			training_labels = tf.placeholder(name="training_labels", dtype=tf.float32)
-			test_data = tf.placeholder(name="test_data", dtype=tf.float32)
-			test_labels = tf.placeholder(name="test_labels", dtype=tf.float32)
-		else:
-			training_data = inputs['training_data']
-			training_labels = inputs['training_labels']
-			test_data = inputs['test_data']
-			test_labels = inputs['test_labels']
+	def _setup_placeholders(self):
+		# TODO	
 
-		return training_data, training_labels, test_data, test_labels
+	def _metalearn_step(self):
+		tasks = self._sample_tasks()
+		for task in tasks:
+			# sample K trajectories using f_theta on task
 
-	def _setup_graph(self):
+			# compute grad loss over these trajectories
 
-		sess = tf.Session()
+			# update current task function with gradient descent
 
-		training_data, training_labels, test_data, test_labels = self._setup_placeholders()
+			# sample new trajectories with updated function, and store it
 
-		return sess, training_data, training_labels, test_data, test_labels
+		# update theta using losses over updated functions per task (meta learning tasks)
 
-	def _metalearn(self, reuse=True):
-		training_preds = self._forward(self._training_data, self._weights, reuse=reuse)
-        training_loss = self._compute_loss(training_preds, self._training_data)
+	def _sample_tasks(self):
+		# TODO: Sample self._batchsize tasks
+			
 
