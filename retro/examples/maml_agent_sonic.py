@@ -1,3 +1,5 @@
+from retro_contest.local import make
+
 import numpy as numpy
 import tensorflow as tf
 
@@ -37,3 +39,17 @@ class MetaLearner(object):
 		# TODO: Sample self._batchsize tasks
 			
 
+
+
+def main():
+    env = make(game='SonicTheHedgehog-Genesis', state='LabyrinthZone.Act1')
+    obs = env.reset()
+    while True:
+        obs, rew, done, info = env.step(env.action_space.sample())
+        env.render()
+        if done:
+            obs = env.reset()
+
+
+if __name__ == '__main__':
+    main()
