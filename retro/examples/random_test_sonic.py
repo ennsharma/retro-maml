@@ -1,6 +1,5 @@
 from retro_contest.local import make
 
-
 def main():
     env = make(game='SonicTheHedgehog-Genesis', state='LabyrinthZone.Act1')
     obs = env.reset()
